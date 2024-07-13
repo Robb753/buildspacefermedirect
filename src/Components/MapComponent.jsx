@@ -30,7 +30,7 @@ const MapComponent = () => {
 
   useEffect(() => {
     const loader = new Loader({
-      apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+      apiKey: "AIzaSyDjriQ5S2ywrpaEME1xrD_cHdlAC1iPX9I",
       version: "weekly",
       libraries: ["marker"],
     });
