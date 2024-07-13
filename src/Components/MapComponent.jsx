@@ -29,7 +29,7 @@ const MapComponent = () => {
 
   useEffect(() => {
     const loader = new Loader({
-      apiKey: "AIzaSyDjriQ5S2ywrpaEME1xrD_cHdlAC1iPX9I",
+      apiKey: "", // Remplacez par votre clé API Google 
       version: "weekly",
       libraries: ["marker"],
     });
