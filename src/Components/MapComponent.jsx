@@ -11,7 +11,7 @@ const MapComponent = () => {
   const markersRef = useRef([]);
 
   useEffect(() => {
-    const apiUrl = ("${process.env.REACT_APP_API_URL}");
+    const apiUrl = "https://fermedirect-bb0533e3ea6e.herokuapp.com/";
     fetch(apiUrl).then((response) => {
       if (!response.ok) {
         throw new Error('HTTP error! Status: ${response.status}');
@@ -93,7 +93,7 @@ const MapComponent = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     const query = e.target.elements.query.value;
-    const apiKey = process.env.REACT_APP_GEOAPIFY_API_KEY; // Remplacez par votre clé API Geoapify
+    const apiKey = "bf6cf043640c4024a00bae8133ccfe39"; // Remplacez par votre clé API Geoapify
 
     if (query) {
       try {
