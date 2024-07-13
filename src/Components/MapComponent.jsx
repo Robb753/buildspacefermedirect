@@ -11,16 +11,15 @@ const MapComponent = () => {
   const markersRef = useRef([]);
 
   useEffect(() => {
-    const apiUrl = "https://fermedirect-bb0533e3ea6e.herokuapp.com/";
-    fetch(apiUrl).then((response) => {
-      if (!response.ok) {
-        throw new Error('HTTP error! Status: ${response.status}');
-      }
-      return response.json();
-    })
-      .then((data) => {
-        console.log("Fetched users:", data);
-        setUsers(data);
+    const apiUrl = "https://fermedirect-bb0533e3ea6e.herokuapp.com/"; // Assurez-vous que l'URL de l'API est correcte
+    axios.get(apiUrl)
+      .then((response) => {
+        if (response.headers["content-type"]?.includes("application/json")) {
+          setUsers(response.data);
+          console.log("Fetched users:", response.data);
+        } else {
+          throw new Error("API response is not JSON");
+        }
       })
       .catch((error) => {
         console.error("Error fetching users:", error);
