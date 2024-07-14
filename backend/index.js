@@ -1,10 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const { connectToServer} = require("./db");
-const UserModel = require("./models/User");
-const EmailModel = require("./models/Email");
 require("dotenv").config();
+
+const { connectToServer } = require("./db");
+const userRoutes = require("./routes/users");
+const subscribeRoutes = require("./routes/subscribe");
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -18,30 +19,9 @@ app.use(express.static('subscribe'))
 // Connect to MongoDB
 connectToServer()
   .then(() => {
-    // Define a route to get all users
-    app.get("/", async (req, res) => {
-      try {
-        const users = await UserModel.find();
-        console.log("Fetched users:", users); // Log the fetched users
-        res.json(users);
-      } catch (err) {
-        console.error("Error fetching users:", err);
-        res.status(500).json({ error: "Failed to fetch users" });
-      }
-    });
-
-    app.post("/api/subscribe", async (req, res) => {
-      const { email } = req.body;
-      console.log(`Received email: ${email}`);
-      try {
-        const newEmail = new EmailModel({ email });
-        await newEmail.save();
-        res.status(200).json({ success: true });
-      } catch (err) {
-        console.error("Error saving email:", err);
-        res.status(500).json({ success: false });
-      }
-    });
+    // Utilisation des routes
+    app.use("/api/users", userRoutes);
+    app.use("/api/subscribe", subscribeRoutes);
 
     // Route de test
     app.get("/", (req, res) => {
