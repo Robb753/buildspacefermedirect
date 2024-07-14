@@ -10,9 +10,15 @@ const subscribeRoutes = require("./routes/subscribe");
 const app = express()
 const PORT = process.env.PORT || 5000
 
+// Configuration du middleware CORS pour autoriser l'origine Netlify
+const corsOptions = {
+  origin: 'https://fermedirect.netlify.app', // Remplacez par l'URL de votre frontend
+  optionsSuccessStatus: 200
+};
+
 // Utilisation du middleware CORS
 app.use(express.json())
-app.use(cors())
+app.use(cors(corsOptions));
 app.use(bodyParser.json())
 
 // Connect to MongoDB
