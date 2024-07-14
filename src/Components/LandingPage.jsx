@@ -7,16 +7,13 @@ const LandingPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(
-      "mongodb+srv://robinschmitt67:X5E5qDhgmrnQojZ2@cluster0.qdsbv7g.mongodb.net/farms",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      }
-    )
+    fetch("https://fermedirect-bb0533e3ea6e.herokuapp.com/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    })
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
