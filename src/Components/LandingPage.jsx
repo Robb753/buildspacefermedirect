@@ -7,13 +7,16 @@ const LandingPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch("http://127.0.0.1:3000/subscribe", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email }),
-    })
+    fetch(
+      "mongodb+srv://robinschmitt67:X5E5qDhgmrnQojZ2@cluster0.qdsbv7g.mongodb.net/farms",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {

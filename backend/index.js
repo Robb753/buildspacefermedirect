@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const { connectToServer, getDb } = require("./db");
+const { connectToServer} = require("./db");
 const UserModel = require("./models/User");
 const EmailModel = require("./models/Email");
 require("dotenv").config();
