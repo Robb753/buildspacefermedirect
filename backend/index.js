@@ -3,6 +3,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const { connectToServer, getDb } = require("./db");
 const UserModel = require("./models/User");
+const EmailModel = require("./models/Email");
 require("dotenv").config();
 
 const app = express()
@@ -28,14 +29,11 @@ connectToServer()
       }
     });
 
-    const emailSchema = new mongoose.Schema({ email: String });
-    const EmailModel = mongoose.model("Email", emailSchema);
-
     app.post("/subscribe", async (req, res) => {
       const { email } = req.body;
       try {
         const newEmail = new EmailModel({ email });
-        await newEmail.save(); // Corrected use of mongoose
+        await newEmail.save();
         res.status(200).json({ success: true });
       } catch (err) {
         console.error("Error saving email:", err);

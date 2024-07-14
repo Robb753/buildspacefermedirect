@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 
-const EmailSchema = new mongoose.Schema({
-  email: String,
+const emailSchema = new mongoose.Schema({
+  email: {type: String, required: true,},
 });
 
-module.exports = mongoose.model("Email", EmailSchema);
+const EmailModel = mongoose.model("Email", emailSchema);
+module.exports = EmailModel;
