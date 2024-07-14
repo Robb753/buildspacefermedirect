@@ -31,6 +31,7 @@ connectToServer()
 
     app.post("/subscribe", async (req, res) => {
       const { email } = req.body;
+      console.log(`Received email: ${email}`);
       try {
         const newEmail = new EmailModel({ email });
         await newEmail.save();
