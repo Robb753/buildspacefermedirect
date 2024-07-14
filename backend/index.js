@@ -28,11 +28,14 @@ connectToServer()
       }
     });
 
+    const emailSchema = new mongoose.Schema({ email: String });
+    const EmailModel = mongoose.model("Email", emailSchema);
+
     app.post("/subscribe", async (req, res) => {
       const { email } = req.body;
       try {
-        const newEmail = { email };
-        await UserModel.collection("emails").insertOne(newEmail); // Corrected use of mongoose
+        const newEmail = new EmailModel({ email });
+        await newEmail.save(); // Corrected use of mongoose
         res.status(200).json({ success: true });
       } catch (err) {
         console.error("Error saving email:", err);
