@@ -7,7 +7,7 @@ const LandingPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch("https://farmedirect-6317c32e65bb.herokuapp.com/", {
+    fetch("https://farmedirect-6317c32e65bb.herokuapp.com/api/subscribe", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -11,7 +11,7 @@ const MapComponent = () => {
   const markersRef = useRef([]);
 
   useEffect(() => {
-    const apiUrl = "https://farmedirect-6317c32e65bb.herokuapp.com/"; // Assurez-vous que l'URL de l'API est correcte
+    const apiUrl = "https://farmedirect-6317c32e65bb.herokuapp.com/api/users"; // Assurez-vous que l'URL de l'API est correcte
     axios.get(apiUrl)
       .then((response) => {
         if (response.headers["content-type"]?.includes("application/json")) {
