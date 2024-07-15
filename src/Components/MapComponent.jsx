@@ -11,7 +11,7 @@ const MapComponent = () => {
   const markersRef = useRef([]);
 
   useEffect(() => {
-    const apiUrl = "https://farmedirect-6317c32e65bb.herokuapp.com/api/users"; // Assurez-vous que l'URL de l'API est correcte
+    const apiUrl = import.meta.env.VITE_API_URL_USERS; // Assurez-vous que l'URL de l'API est correcte
     axios.get(apiUrl)
       .then((response) => {
         if (response.headers["content-type"]?.includes("application/json")) {
@@ -29,7 +29,7 @@ const MapComponent = () => {
 
   useEffect(() => {
     const loader = new Loader({
-      apiKey: "", // Remplacez par votre clé API Google 
+      apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY, // Remplacez par votre clé API Google
       version: "weekly",
       libraries: ["marker"],
     });
@@ -92,7 +92,7 @@ const MapComponent = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     const query = e.target.elements.query.value;
-    const apiKey = "bf6cf043640c4024a00bae8133ccfe39"; // Remplacez par votre clé API Geoapify
+    const apiKey = import.meta.env.VITE_GEOPIFY_API_KEY; // Remplacez par votre clé API Geoapify
 
     if (query) {
       try {
