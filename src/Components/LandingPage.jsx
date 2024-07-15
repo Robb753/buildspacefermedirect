@@ -7,7 +7,7 @@ const LandingPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch("https://farmedirect-6317c32e65bb.herokuapp.com/api/subscribe", {
+    fetch(import.meta.env.VITE_API_URL_SUBSCRIBE, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
