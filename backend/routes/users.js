@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const UserModel = require("../models/User");
 
-router.get("/", async (req, res) => {
+router.get("/users", async (req, res) => {
   try {
     const users = await UserModel.find();
     console.log("Fetched users:", users); // Log the fetched users

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const EmailModel = require("../models/Email");
 
-router.post("/", async (req, res) => {
+router.post("/subscribe", async (req, res) => {
   const { email } = req.body;
   console.log(`Received email: ${email}`);
   if (!email) {
