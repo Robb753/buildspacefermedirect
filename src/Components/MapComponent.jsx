@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Loader } from "@googlemaps/js-api-loader";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+//import { Loader } from "@googlemaps/js-api-loader";
+import { GoogleMap, LoadScript, AdvancedMarkerElement } from "@react-google-maps/api";
 import axios from "axios";
 
 const MapComponent = () => {
   const [users, setUsers] = useState([]);
-  const [map, setMap] = useState(null);
+  //const [map, setMap] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [error, setError] = useState(null);
   const [center, setCenter] = useState({ lat: 48.5734, lng: 7.7521 });
@@ -29,33 +29,13 @@ const MapComponent = () => {
   }, []);
 
   useEffect(() => {
-    const loader = new Loader({
-      apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY, // Remplacez par votre clé API Google
-      version: "weekly",
-      libraries: ["marker"],
-    });
-
-    loader
-      .load()
-      .then(() => {
-        const google = window.google;
-
-        if (map === null) {
-          const mapInstance = new google.maps.Map(
-            document.getElementById("map"),
-            {
-              center,
-              zoom: 7,
-              mapId: "5f8f7e10189920ed",
-            }
-          );
-
-          setMap(mapInstance);
-        } else {
-          // Nettoyage des anciens marqueurs
+    if (markersRef.current.length) {
+              // Nettoyage des anciens marqueurs
           markersRef.current.forEach((marker) => marker.setMap(null));
           markersRef.current = [];
-
+    }
+    if (users.length && window.google && window.google.maps) {
+      const google = window.google;
           // Ajouter les nouveaux marqueurs
           users.forEach((user) => {
             const position = { lat: user.latitude, lng: user.longitude };
@@ -76,21 +56,9 @@ const MapComponent = () => {
             markersRef.current.push(marker);
           });
         }
-      })
-      .catch((e) => {
-        console.error("Error loading Google Maps API:", e);
-        setError("Failed to load Google Maps API.");
-      });
+      }, [users])
 
-    return () => {
-      if (map !== null) {
-        markersRef.current.forEach((marker) => marker.setMap(null));
-        markersRef.current = [];
-      }
-    };
-  }, [users, map, center]);
-
-  const handleSearch = async (e) => {
+      const handleSearch = async (e) => {
     e.preventDefault();
     const query = e.target.elements.query.value;
     const apiKey = import.meta.env.VITE_GEOPIFY_API_KEY; // Remplacez par votre clé API Geoapify
@@ -126,12 +94,12 @@ const MapComponent = () => {
         onSubmit={handleSearch}
         style={{ marginBottom: "10px", textAlign: "center" }}
       >
-      <input
+        <input
           type="text"
           name="query"
           placeholder="Rechercher une adresse..."
           style={{ width: "300px", padding: "5px" }}
-      />
+        />
         <button type="submit" style={{ padding: "5px 10px" }}>
           Rechercher
         </button>
@@ -139,16 +107,21 @@ const MapComponent = () => {
       {error && <div style={{ color: "red" }}>{error}</div>}
       <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
         <GoogleMap
+          id="map"
           mapContainerStyle={{ height: "100vh", width: "100%" }}
           center={center}
           zoom={7}
+          onLoad={(map) => {
+            // Ajouter les marqueurs à la carte lorsqu'elle est chargée
+            markersRef.current.forEach((marker) => marker.setMap(map));
+          }}
         >
           {users.map((user) => (
-            <Marker
+            <AdvancedMarkerElement
               key={user._id}
               position={{ lat: user.latitude, lng: user.longitude }}
               title={user.name}
-              onClick={() => window.location.href = `/farm/${user._id}`}
+              onClick={() => (window.location.href = `/farm/${user._id}`)}
               onMouseOver={() => setSelectedUser(user)}
             />
           ))}
