@@ -1,12 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
-import {
-  APIprovider,
-  Map,
-  AdvancedMarker,
-  Pin,
-  InfoWindow,
-} from "@vis.gl/react-google-maps";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import axios from "axios";
 
 const MapComponent = () => {
@@ -127,7 +121,6 @@ const MapComponent = () => {
   };
 
   return (
-    <APIprovider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
     <div>
       <form
         onSubmit={handleSearch}
@@ -144,7 +137,23 @@ const MapComponent = () => {
         </button>
       </form>
       {error && <div style={{ color: "red" }}>{error}</div>}
-      <div id="map" style={{ height: "100vh", width: "100%" }}></div>
+      <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+        <GoogleMap
+          mapContainerStyle={{ height: "100vh", width: "100%" }}
+          center={center}
+          zoom={7}
+        >
+          {users.map((user) => (
+            <Marker
+              key={user._id}
+              position={{ lat: user.latitude, lng: user.longitude }}
+              title={user.name}
+              onClick={() => window.location.href = `/farm/${user._id}`}
+              onMouseOver={() => setSelectedUser(user)}
+            />
+          ))}
+        </GoogleMap>
+      </LoadScript>
       <div>
         {users.map((user) => (
           <div key={user._id}>
@@ -154,7 +163,6 @@ const MapComponent = () => {
         ))}
       </div>
     </div>
-    </APIprovider>
   );
 };
 
