@@ -104,7 +104,7 @@ const MapComponent = () => {
         </button>
       </form>
       {error && <div style={{ color: "red" }}>{error}</div>}
-      <LoadScript googleMapsApiKey="AIzaSyDjriQ5S2ywrpaEME1xrD_cHdlAC1iPX9I">
+      <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
         <GoogleMap
           id="map"
           mapContainerStyle={{ height: "100vh", width: "100%" }}
