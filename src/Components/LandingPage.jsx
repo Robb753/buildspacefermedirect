@@ -3,11 +3,13 @@ import React, { useState } from "react";
 const LandingPage = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
-    fetch(import.meta.env.VITE_API_URL_SUBSCRIBE, {
+    fetch("https://farmedirect-6317c32e65bb.herokuapp.com/api/subscribe", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,6 +29,10 @@ const LandingPage = () => {
       })
       .catch((error) => {
         setMessage("Une erreur s'est produite. Veuillez réessayer.");
+        console.error("Erreur:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -42,7 +48,9 @@ const LandingPage = () => {
           placeholder="Votre adresse e-mail"
           required
         />
-        <button type="submit">S'inscrire</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? "Envoi en cours..." : "S'inscrire"}
+        </button>
       </form>
       {message && <p>{message}</p>}
     </div>

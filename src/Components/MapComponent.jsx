@@ -1,17 +1,24 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
+import {
+  APIprovider,
+  Map,
+  AdvancedMarker,
+  Pin,
+  InfoWindow,
+} from "@vis.gl/react-google-maps";
 import axios from "axios";
 
 const MapComponent = () => {
   const [users, setUsers] = useState([]);
   const [map, setMap] = useState(null);
-  const [setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [error, setError] = useState(null);
   const [center, setCenter] = useState({ lat: 48.5734, lng: 7.7521 });
   const markersRef = useRef([]);
 
   useEffect(() => {
-    const apiUrl = import.meta.env.VITE_API_URL_USERS; // Assurez-vous que l'URL de l'API est correcte
+    const apiUrl = "https://farmedirect-6317c32e65bb.herokuapp.com/api/users"; // Assurez-vous que l'URL de l'API est correcte
     axios.get(apiUrl)
       .then((response) => {
         if (response.headers["content-type"]?.includes("application/json")) {
@@ -120,23 +127,24 @@ const MapComponent = () => {
   };
 
   return (
+    <APIprovider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
     <div>
       <form
         onSubmit={handleSearch}
         style={{ marginBottom: "10px", textAlign: "center" }}
       >
-        <input
+      <input
           type="text"
           name="query"
           placeholder="Rechercher une adresse..."
           style={{ width: "300px", padding: "5px" }}
-        />
+      />
         <button type="submit" style={{ padding: "5px 10px" }}>
           Rechercher
         </button>
       </form>
       {error && <div style={{ color: "red" }}>{error}</div>}
-      <div id="map" style={{ height: "500px", width: "100%" }}></div>
+      <div id="map" style={{ height: "100vh", width: "100%" }}></div>
       <div>
         {users.map((user) => (
           <div key={user._id}>
@@ -146,6 +154,7 @@ const MapComponent = () => {
         ))}
       </div>
     </div>
+    </APIprovider>
   );
 };
 
