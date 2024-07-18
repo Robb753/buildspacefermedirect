@@ -32,7 +32,7 @@ const MapComponent = () => {
 
   useEffect(() => {
     const loader = new Loader({
-      apiKey: process.env.VITE_GOOGLE_MAPS_API_KEY,
+      apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
       version: "weekly",
       libraries: ["marker"],
     });
@@ -95,7 +95,7 @@ const MapComponent = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     const query = e.target.elements.query.value;
-    const apiKey = process.env.VITE_GEOPIFY_API_KEY; // Remplacez par votre clé API Geoapify
+    const apiKey = import.meta.env.VITE_GEOPIFY_API_KEY; // Remplacez par votre clé API Geoapify
 
     if (query) {
       try {
