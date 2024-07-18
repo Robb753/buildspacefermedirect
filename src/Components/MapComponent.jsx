@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 //import { Loader } from "@googlemaps/js-api-loader";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, Marker, } from "@react-google-maps/api";
 import axios from "axios";
 
 const MapComponent = () => {
@@ -110,6 +110,7 @@ const MapComponent = () => {
           mapContainerStyle={{ height: "100vh", width: "100%" }}
           center={center}
           zoom={7}
+          options={{ mapId: "5f886b1686753266" }}
           onLoad={(map) => {
             // Ajouter les marqueurs à la carte lorsqu'elle est chargée
             markersRef.current.forEach((marker) => marker.setMap(map));
