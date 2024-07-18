@@ -1,6 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 //import { Loader } from "@googlemaps/js-api-loader";
-import { GoogleMap, LoadScript, Marker, } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  LoadScriptNext,
+  AdvancedMarkerElement,
+} from "@react-google-maps/api";
 import axios from "axios";
 
 const MapComponent = () => {
@@ -39,7 +43,7 @@ const MapComponent = () => {
           // Ajouter les nouveaux marqueurs
           users.forEach((user) => {
             const position = { lat: user.latitude, lng: user.longitude };
-            const marker = new google.maps.Marker({
+            const marker = new google.maps.AdvancedMarkerElement({
               position,
               title: user.name,
             });
@@ -104,7 +108,10 @@ const MapComponent = () => {
         </button>
       </form>
       {error && <div style={{ color: "red" }}>{error}</div>}
-      <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+      <LoadScriptNext
+        googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+        libraries={["marker"]}
+      >
         <GoogleMap
           id="map"
           mapContainerStyle={{ height: "100vh", width: "100%" }}
@@ -117,7 +124,7 @@ const MapComponent = () => {
           }}
         >
           {users.map((user) => (
-            <Marker
+            <AdvancedMarkerElement
               key={user._id}
               position={{ lat: user.latitude, lng: user.longitude }}
               title={user.name}
@@ -126,7 +133,7 @@ const MapComponent = () => {
             />
           ))}
         </GoogleMap>
-      </LoadScript>
+      </LoadScriptNext>
       <div>
         {users.map((user) => (
           <div key={user._id}>
