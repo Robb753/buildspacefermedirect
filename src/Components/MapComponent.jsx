@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import axios from "axios";
-require("dotenv").config();
 
 const MapComponent = () => {
   const [users, setUsers] = useState([]);
