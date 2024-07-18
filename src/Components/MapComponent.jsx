@@ -1,31 +1,28 @@
 import React, { useEffect, useState, useRef } from "react";
-//import { Loader } from "@googlemaps/js-api-loader";
-import {
-  APIProvider,
-  Map,
-  AdvancedMarker,
-  Pin,
-} from "@vis.gl/react-google-maps"
+import { Loader } from "@googlemaps/js-api-loader";
 import axios from "axios";
+require("dotenv").config();
 
 const MapComponent = () => {
   const [users, setUsers] = useState([]);
-  //const [map, setMap] = useState(null);
+  const [map, setMap] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [error, setError] = useState(null);
   const [center, setCenter] = useState({ lat: 48.5734, lng: 7.7521 });
   const markersRef = useRef([]);
 
   useEffect(() => {
-    const apiUrl = "https://farmedirect-6317c32e65bb.herokuapp.com/api/users"; // Assurez-vous que l'URL de l'API est correcte
-    axios.get(apiUrl)
+    const apiUrl = "https://farmedirect-6317c32e65bb.herokuapp.com/api/users";
+    fetch(apiUrl)
       .then((response) => {
-        if (response.headers["content-type"]?.includes("application/json")) {
-          setUsers(response.data);
-          console.log("Fetched users:", response.data);
-        } else {
-          throw new Error("API response is not JSON");
+        if (!response.ok) {
+          throw new Error("HTTP error! Status: ${response.status}");
         }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Fetched users:", data);
+        setUsers(data);
       })
       .catch((error) => {
         console.error("Error fetching users:", error);
@@ -34,17 +31,38 @@ const MapComponent = () => {
   }, []);
 
   useEffect(() => {
-    if (markersRef.current.length) {
-              // Nettoyage des anciens marqueurs
+    const loader = new Loader({
+      apiKey: process.env.VITE_GOOGLE_MAPS_API_KEY,
+      version: "weekly",
+      libraries: ["marker"],
+    });
+
+    loader
+      .load()
+      .then(() => {
+        const google = window.google;
+
+        if (map === null) {
+          const mapInstance = new google.maps.Map(
+            document.getElementById("map"),
+            {
+              center,
+              zoom: 7,
+              mapId: "5f8f7e10189920ed",
+            }
+          );
+
+          setMap(mapInstance);
+        } else {
+          // Nettoyage des anciens marqueurs
           markersRef.current.forEach((marker) => marker.setMap(null));
           markersRef.current = [];
-    }
-    if (users.length && window.google && window.google.maps) {
-      const google = window.google;
+
           // Ajouter les nouveaux marqueurs
           users.forEach((user) => {
             const position = { lat: user.latitude, lng: user.longitude };
-            const marker = new google.maps.Marker.AdvancedMarkerElement({
+            const marker = new google.maps.marker.AdvancedMarkerElement({
+              map,
               position,
               title: user.name,
             });
@@ -60,12 +78,24 @@ const MapComponent = () => {
             markersRef.current.push(marker);
           });
         }
-      }, [users])
+      })
+      .catch((e) => {
+        console.error("Error loading Google Maps API:", e);
+        setError("Failed to load Google Maps API.");
+      });
 
-      const handleSearch = async (e) => {
+    return () => {
+      if (map !== null) {
+        markersRef.current.forEach((marker) => marker.setMap(null));
+        markersRef.current = [];
+      }
+    };
+  }, [users, map, center]);
+
+  const handleSearch = async (e) => {
     e.preventDefault();
     const query = e.target.elements.query.value;
-    const apiKey = import.meta.env.VITE_GEOPIFY_API_KEY; // Remplacez par votre clé API Geoapify
+    const apiKey = process.env.VITE_GEOPIFY_API_KEY; // Remplacez par votre clé API Geoapify
 
     if (query) {
       try {
@@ -109,28 +139,7 @@ const MapComponent = () => {
         </button>
       </form>
       {error && <div style={{ color: "red" }}>{error}</div>}
-
-      <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-        <div style={{ height: "500px", width: "100%" }}>
-          <Map zoom={7} center={center} mapId={"5f886b1686753266"}>
-            {users.map((user) => (
-              <AdvancedMarker
-                key={user._id}
-                position={{ lat: user.latitude, lng: user.longitude }}
-                title={user.name}
-                onClick={() => (window.location.href = `/farm/${user._id}`)}
-                onMouseOver={() => setSelectedUser(user)}
-              >
-                <Pin
-                  background={"black"}
-                  borderColor={"green"}
-                  glyphColor={"purple"}
-                />
-              </AdvancedMarker>
-            ))}
-          </Map>
-        </div>
-      </APIProvider>
+      <div id="map" style={{ height: "500px", width: "100%" }}></div>
       <div>
         {users.map((user) => (
           <div key={user._id}>
