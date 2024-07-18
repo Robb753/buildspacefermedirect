@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 //import { Loader } from "@googlemaps/js-api-loader";
 import {
-  GoogleMap,
-  LoadScriptNext,
-  AdvancedMarkerElement,
-} from "@react-google-maps/api";
+  APIProvider,
+  Map,
+  AdvancedMarker,
+  Pin,
+} from "@vis.gl/react-google-maps"
 import axios from "axios";
 
 const MapComponent = () => {
@@ -108,32 +109,28 @@ const MapComponent = () => {
         </button>
       </form>
       {error && <div style={{ color: "red" }}>{error}</div>}
-      <LoadScriptNext
-        googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-        libraries={["marker"]}
-      >
-        <GoogleMap
-          id="map"
-          mapContainerStyle={{ height: "100vh", width: "100%" }}
-          center={center}
-          zoom={7}
-          options={{ mapId: "5f886b1686753266" }}
-          onLoad={(map) => {
-            // Ajouter les marqueurs à la carte lorsqu'elle est chargée
-            markersRef.current.forEach((marker) => marker.setMap(map));
-          }}
-        >
-          {users.map((user) => (
-            <AdvancedMarkerElement
-              key={user._id}
-              position={{ lat: user.latitude, lng: user.longitude }}
-              title={user.name}
-              onClick={() => (window.location.href = `/farm/${user._id}`)}
-              onMouseOver={() => setSelectedUser(user)}
-            />
-          ))}
-        </GoogleMap>
-      </LoadScriptNext>
+
+      <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+        <div style={{ height: "500px", width: "100%" }}>
+          <Map zoom={7} center={center} mapId={"5f886b1686753266"}>
+            {users.map((user) => (
+              <AdvancedMarker
+                key={user._id}
+                position={{ lat: user.latitude, lng: user.longitude }}
+                title={user.name}
+                onClick={() => (window.location.href = `/farm/${user._id}`)}
+                onMouseOver={() => setSelectedUser(user)}
+              >
+                <Pin
+                  background={"grey"}
+                  borderColor={"green"}
+                  glyphColor={"purple"}
+                />
+              </AdvancedMarker>
+            ))}
+          </Map>
+        </div>
+      </APIProvider>
       <div>
         {users.map((user) => (
           <div key={user._id}>
