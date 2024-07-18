@@ -122,7 +122,7 @@ const MapComponent = () => {
                 onMouseOver={() => setSelectedUser(user)}
               >
                 <Pin
-                  background={"grey"}
+                  background={"black"}
                   borderColor={"green"}
                   glyphColor={"purple"}
                 />
