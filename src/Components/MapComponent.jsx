@@ -44,7 +44,7 @@ const MapComponent = () => {
           // Ajouter les nouveaux marqueurs
           users.forEach((user) => {
             const position = { lat: user.latitude, lng: user.longitude };
-            const marker = new google.maps.AdvancedMarkerElement({
+            const marker = new google.maps.AdvancedMarker({
               position,
               title: user.name,
             });
