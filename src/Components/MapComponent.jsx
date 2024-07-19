@@ -36,22 +36,18 @@ const MapComponent = () => {
       libraries: ["marker"],
     });
 
-    loader
-      .load()
-      .then(() => {
-        const google = window.google;
-
+    loader.load().then(async() => {
+      const google = window.google;
+      const { Map } = await google.maps.importLibrary("maps")
         if (map === null) {
-          const mapInstance = new google.maps.Map(
-            document.getElementById("map"),
+          const map = new Map(document.getElementById("map"),
             {
               center,
               zoom: 7,
               mapId: "5f8f7e10189920ed",
             }
           );
-
-          setMap(mapInstance);
+          setMap(map);
         } else {
           // Nettoyage des anciens marqueurs
           markersRef.current.forEach((marker) => marker.setMap(null));
