@@ -40,13 +40,11 @@ const MapComponent = () => {
       const google = window.google;
       const { Map } = await google.maps.importLibrary("maps")
         if (map === null) {
-          const map = new Map(document.getElementById("map"),
-            {
-              center,
-              zoom: 7,
-              mapId: "5f8f7e10189920ed",
-            }
-          );
+          const map = new Map(document.getElementById("map"), {
+            center,
+            zoom: 7,
+            mapId: "a2ae192352205b25",
+          });
           setMap(map);
         } else {
           // Nettoyage des anciens marqueurs
