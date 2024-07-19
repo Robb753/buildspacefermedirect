@@ -14,7 +14,7 @@ const MapComponent = () => {
     fetch(apiUrl)
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          throw new Error("HTTP error! Status: ${response.status}");
         }
         return response.json();
       })
@@ -29,58 +29,55 @@ const MapComponent = () => {
   }, []);
 
   useEffect(() => {
-    const initializeMap = async () => {
-      if (!window.google || !window.google.maps) {
-        console.error("Google Maps JavaScript API is not loaded");
-        setError("Failed to load Google Maps API.");
-        return;
-      }
+const initilizeMap = async () => {
+  if (!window.google || !window.google.maps) {
+    console.error("Google Maps JavaScript API is not loaded");
+    setError("Failed to load Google Maps API.");
+    return;
+  }
 
-      const { Map } = await window.google.maps.importLibrary("maps");
-      const { AdvancedMarkerElement } = await window.google.maps.importLibrary(
-        "marker"
-      );
+  const { Map } = await window.google.maps.importLibrary("maps");
+  const { AdvancedMarkerElement } = await window.google.maps.importLibrary(
+    "marker"
+  );
+        if (map === null) {
+          const mapInstance = new Map(document.getElementById("map"), {
+            center,
+            zoom: 7,
+            mapId: "a2ae192352205b25",
+          });
+          setMap(mapInstance);
+        } else {
+          // Nettoyage des anciens marqueurs
+          markersRef.current.forEach((marker) => marker.setMap(null));
+          markersRef.current = [];
 
-      if (map === null) {
-        const mapInstance = new Map(document.getElementById("map"), {
-          center,
-          zoom: 7,
-          mapId: "5f8f7e10189920ed",
-        });
+          // Ajouter les nouveaux marqueurs
+          users.forEach((user) => {
+            const position = { lat: user.latitude, lng: user.longitude };
+            const marker = new google.maps.marker.AdvancedMarkerElement({
+              map,
+              position,
+              title: user.name,
+            });
 
-        setMap(mapInstance);
+            marker.addListener("mouseover", () => {
+              setSelectedUser(user);
+            });
+
+            marker.addListener("click", () => {
+              window.location.href = `/farm/${user._id}`;
+            });
+
+            markersRef.current.push(marker);
+          });
+        }
+      };
+      if (window.google && window.google.maps) {
+        initializeMap();
       } else {
-        // Nettoyage des anciens marqueurs
-        markersRef.current.forEach((marker) => marker.setMap(null));
-        markersRef.current = [];
-
-        // Ajouter les nouveaux marqueurs
-        users.forEach((user) => {
-          const position = { lat: user.latitude, lng: user.longitude };
-          const marker = new AdvancedMarkerElement({
-            map,
-            position,
-            title: user.name,
-          });
-
-          marker.addListener("mouseover", () => {
-            setSelectedUser(user);
-          });
-
-          marker.addListener("click", () => {
-            window.location.href = `/farm/${user._id}`;
-          });
-
-          markersRef.current.push(marker);
-        });
+        window.initMap = initializeMap;
       }
-    };
-
-    if (window.google && window.google.maps) {
-      initializeMap();
-    } else {
-      window.initMap = initializeMap;
-    }
 
     return () => {
       if (map !== null) {
