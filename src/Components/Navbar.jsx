@@ -1,12 +1,12 @@
 import React from "react";
-import Logo from "../assets/img/Sabzi.png";
+import Logo from "../assets/img/logo.png";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
     <div className="container-fluid px-5 header sticky-top">
-      <header className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2 border-bottom border-dark">
+      <header className="navbar-header d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2 border-bottom border-dark">
         <Link
           to="/"
           className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none"
