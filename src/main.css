@@ -3,8 +3,8 @@
 
 /* Variables CSS */
 :root {
-  --background: #024718;
-  --text-color: rgba(232, 232, 217, 0.900);
+  --background: rgba(9, 82, 40, 0.800);
+  --text-color: rgba(230, 230, 230, 0.900);
 }
 
 /* Styles communs */
@@ -13,46 +13,6 @@ body {
   padding: 0;
   font-family: 'Raleway', sans-serif;
   overflow-x: hidden;
-}
-
-.container-navbar{
-    transition: 1s all ease-in-out;
-}
-
-.container-navbar.menuopen{
-    filter: blur(8px);
-    transform: scale(1.2);
-}
-
-section{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    position: relative;
-    background-size: cover;
-    padding: 50px;
-}
-
-section::after{
-    content: "";
-    position: absolute;
-    background-color: #000;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0.5;
-}
-
-section h1{
-    font-size: 120px;
-    z-index: 2;
-}
-
-.header-navbar{
-    z-index: 9999;
-    position: relative;
 }
 
 .header {
@@ -65,122 +25,53 @@ section h1{
   font-size: 18px;
 }
 
-.header-navbar #logo{
-    position: fixed;
-    top: 30px;
-    left: 0;
-    right: 0;
-    width: 70px;
-    height: auto;
-    margin: 0 auto;
-    opacity: 1;
-    transition: all 0.3s cubic-bezier(0.215, 0.61, 0.355, 1) 0.6s;
+.navbar-custom {
+  background-color: var(--background);
+  color: var(--text-color);
+  position: sticky;
+  top: 0;
+  width: 100%;
+  backdrop-filter: blur(10px);
+  z-index: 10;
 }
 
-.header-navbar nav{
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    left: 0;
-    right: 0;
-    width: 420px;
-    z-index: 100;
-    top: 130px;
-    margin: 0 auto;
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    transition: 1s all cubic-bezier(0.080, 0.9, 0.18, 1) 0.2s;
+.navbar-custom .nav-link {
+  color: var(--text-color);
 }
 
-.header-navbar nav a{
-    color: #fff;
-    text-decoration: none;
-    font-weight: 700;
-    padding: 10px 16px;
-    font-size: 18px;
-    letter-spacing: 1.8px;
-    transition: 0.3s all cubic-bezier(0.080, 0.9, 0.18, 1) 0.6s, 0.3s color ease;
+/* Pour s'assurer que la couleur du texte change également pour les liens actifs */
+.navbar-custom .nav-link.active {
+  color: var(--text-color);
 }
 
-.header-navbar nav a:hover{
-    color: #000;
+.navbar-logo {
+  width: 20vh;
+  height: 20vh; /* Réduire la largeur à 100px */
 }
 
-.header-navbar nav button{
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    width: 60px;
-    height: 60px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    position: absolute;
-    z-index: 100;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    border-radius: 100%;
-    cursor: pointer;
-    transform: scale(0);
-    transition: 0.3s all cubic-bezier(0.080, 0.9, 0.18, 1) 0.2s;
-}
+.offcanvas-header {
+            display: none;
+          }
 
-.header-navbar nav button span{
-    width: 50%;
-    background-color: #fff;
-    height: 3px;
-    display: block;
-    margin: 4px auto;
-    transform: scale(0);
-    transition: 0.6s transform cubic-bezier(0.080, 0.9, 0.18, 1) 0s, 0.3s margin ease-in 0s;
-}
-
-.header-navbar nav button:hover span{
-    margin: 9px auto;
-}
-
-.header-navbar.sticky #logo{
-    opacity: 0;
-}
-
-.header-navbar.sticky nav{
-    top: 20px;
-    padding: 0;
-    width: 80px;
-    height: 80px;
-}
-
-.header-navbar.sticky nav button{
-    transform: scale(1);
-    transition-delay: 0.3s;
-}
-
-.header-navbar.sticky nav button span{
-    transform: scaleX(1);
-    transition: 0.8s transform cubic-bezier(0.080, 0.9, 0.18, 1) 0.8s, 0.3s margin ease-in 0s;
-}
-
-.header-navbar.sticky nav a{
-    opacity: 0;
-    transform: scale(0.3);
-    transition-delay: 0.1s;
+.offcanvas {
+  background-color: transparent;
+  margin: auto;
 }
 
 .header img {
   width: 110px;
-  height: 40px;
+  height: 100px;
 }
 
 .hero-container {
-  background-color: var(--background);
+  background-image: url('../src/assets/img/image3.jpg'); /* Chemin vers ton image */
+  background-attachment: fixed; /* Créé l'effet parallaxe */
+  background-size: cover; /* Couvre tout l'élément */
+  background-position: center; /* Centre l'image */
+  background-repeat: no-repeat; /* Empêche la répétition de l'image */
+  height: 100vh; /* Ajuste la hauteur selon tes besoins */
+  position: relative;
+  z-index: 1; /* Assure que le hero est derrière la navbar */
 }
 
 .hero-text h1 span,
@@ -188,46 +79,12 @@ section h1{
   color: var(--text-color);
 }
 
-.delivery-process h2,
-.healthy h2 {
-  color: var(--text-color);
-}
-
-.healthy {
-  background-color: var(--background);
-}
-
-.slider {
-  background-image: url("../assets/img/pumpkin.jpg");
-}
-
-.p1color {
-  background-color: rgb(214, 242, 251);
-}
-
-.p2color {
-  background-color: rgb(214, 246, 201);
-}
-
-.p3color {
-  background-color: rgb(237, 248, 215);
-}
-
-.p4color {
-  background-color: rgb(248, 238, 247);
-}
-
-.p5color {
-  background-color: rgb(235, 230, 246);
-}
-
-.p-Image {
-  width: 300px;
-  height: 200px;
-}
-
 .footer {
-  background-image: url("../assets/img/footerbg.png");
+  background-color: var(--background);
+  color: var(--text-color);
+  position: sticky;
+  backdrop-filter: blur(10px);
+  z-index: 10;
 }
 
 /* Styles spécifiques à la page de destination */
@@ -259,7 +116,7 @@ video {
 
 .landing-page-header span {
   font-weight: 800;
-  font-size: 7rem;
+  font-size: 6rem;
   display: block;
 }
 
@@ -356,26 +213,11 @@ video {
 
 @media screen and (max-width: 1200px) {
   .description {
-    width: 91vw;
+    width: 91vh;
     bottom: 0;
     border-radius: 20px 20px 0 0;
     padding: 0.6rem 1.5rem;
   }
-
-  .header-navbar nav{
-    height: 60px;
-    width: 390px;
-  }
-
-  .header-navbar nav button{
-        width: 50px;
-        height: 50px;
-    }
-
-    .header-navbar nav a{
-        font-size: 16px;
-    }
-
     section h1{
         font-size: 80px;
     }
@@ -385,4 +227,8 @@ video {
         height: 70px;
     }
 
+  .hero-container .btn {
+    padding: 0.5rem 1rem; /* Ajuste la taille du bouton */
+    font-size: 16px; /* Réduit la taille du texte du bouton */
+  }
 }

@@ -1,21 +1,12 @@
 import React from "react";
-import HeroImage from "../assets/img/hero1.png";
 import Certificate from "../assets/img/certi.png";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
     <div className="container-fluid col-xxl-12 px-4 py-5 hero-container">
       <div className="row flex-lg-row-reverse align-items-center g-5">
-        <div className="col-10 col-sm-8 col-lg-5">
-          <img
-            src={HeroImage}
-            className="d-block mx-lg-auto img-fluid"
-            alt="Bootstrap Themes"
-            width="700"
-            height="500"
-            loading="lazy"
-          />
-        </div>
+        <div className="col-10 col-sm-8 col-lg-5"></div>
         <div className="col-lg-6 py-5 hero-text">
           <h1 className="display-1 fw-bold lh-1 mb-3">
             <span>Your Online Local Farms</span>
@@ -28,19 +19,23 @@ const Hero = () => {
               organic vegetables from the fields to your doorstep.
             </p>
           </div>
-          <div className="d-grid gap-2 d-md-flex justify-content-md-start">
-            <button
-              type="button"
-              className="btn btn-warning btn-lg px-4 me-md-2 rounded-0"
-            >
-              Pick your Farms
-            </button>
-            <button
-              type="button"
-              className="btn btn-light btn-lg px-4 rounded-0"
-            >
-              Shop Your Veg
-            </button>
+          <div className="d-grid gap-3 d-md-flex justify-content-md-start">
+            <Link to="/map">
+              <button
+                type="button"
+                className="btn btn-success btn-lg px-4 me-md-2 rounded-0"
+              >
+                Pick your Farms
+              </button>
+            </Link>
+            <Link to="/map">
+              <button
+                type="button"
+                className="btn btn-warning btn-lg px-4 rounded-0"
+              >
+                Shop Your Veg
+              </button>
+            </Link>
           </div>
         </div>
       </div>

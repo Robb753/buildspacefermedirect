@@ -1,33 +1,9 @@
 import React from "react";
-import Logo from "../assets/img/footerlogo.png";
+import Logo from "../assets/img/logo.png";
 
 const Footer = () => {
   return (
     <div className="footer py-3">
-      <div className="d-flex flex-column justify-column-center align-items-center pt-3">
-        <i className="bi bi-envelope display-3 text-white"></i>
-        <h3 className="text-white mt-3">Stay informed about special offers</h3>
-        <h5 className="text-white fst-italic mt-2">
-          subscribe to the newsletter
-        </h5>
-        <div className="input-group mb-3 mt-4 w-50">
-          <input
-            type="text"
-            className="form-control p-2"
-            placeholder="Recipient's username"
-            aria-label="Recipient's username"
-            aria-describedby="button-addon2"
-          />
-          <button
-            className="btn btn-warning px-4"
-            type="button"
-            id="button-addon2"
-          >
-            Button
-          </button>
-        </div>
-      </div>
-
       <div className="container">
         <footer className="py-5">
           <div className="row row-cols-2 row-cols-md-4 text-white">
@@ -97,7 +73,7 @@ const Footer = () => {
 
           <div className="d-flex justify-content-between pt-4 mt-4 border-top">
             <p className="text-white">
-              &copy; 2023 Company, Inc. All rights reserved.
+              &copy; 2024 Company, Inc. All rights reserved.
             </p>
             <ul className="list-unstyled d-flex">
               <li className="ms-3">
