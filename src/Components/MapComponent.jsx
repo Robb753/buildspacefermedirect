@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
+import { SuperClusterAlgorithm } from "@googlemaps/markerclusterer";
 import { clusterOptions } from "../clusterOptions";
 import "../main.css"
 
@@ -82,12 +83,16 @@ const MapComponent = () => {
             window.location.href = "/farm/${user._id}";
           });
 
-          markersRef.current = newMarkers;
+          return marker;
         });
+
+          markersRef.current = newMarkers;
+        
         if (map) {
           markerClusterRef.current = new MarkerClusterer({
             map,
-            markers: newMarkers, ...clusterOptions,
+            markers: newMarkers,
+            algorithm: new SuperClusterAlgorithm(clusterOptions),
           });
         }
       }
