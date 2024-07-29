@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
+import { clusterOptions } from "../clusterOptions";
 import "../main.css"
 
 const MapComponent = () => {
@@ -86,7 +87,7 @@ const MapComponent = () => {
         if (map) {
           markerClusterRef.current = new MarkerClusterer({
             map,
-            markers: newMarkers,
+            markers: newMarkers, ...clusterOptions,
           });
         }
       }
