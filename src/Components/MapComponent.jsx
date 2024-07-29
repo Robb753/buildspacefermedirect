@@ -163,7 +163,7 @@ const MapComponent = () => {
   };
 
   return (
-    <div className="container">
+    <div className="map-container">
       <div className="search-form">
         <form onSubmit={handleSearch}>
           <input

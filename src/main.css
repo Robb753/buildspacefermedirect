@@ -214,11 +214,17 @@ video {
 
 /* MapComponent */
 
+.map-container {
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 1200px;
+}
 
 .search-form {
   margin-bottom: 10px;
   margin-top: 5vh;
   text-align: center;
+  padding: 10px; /* Ajouté pour plus de clarté */
 }
 
 .search-form input {
@@ -237,7 +243,7 @@ video {
 .content {
   display: flex;
   width: 100%;
-  height: 500px;
+  height: calc(100vh - 15vh); /* Ajusté pour utiliser toute la hauteur disponible */
   margin-bottom: 10vh;
   margin-top: 5vh;
 }
@@ -255,6 +261,7 @@ video {
   padding: 10px;
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #fff; /* Ajouté pour une meilleure visibilité */
 }
 
 .map {
