@@ -45,8 +45,8 @@ body {
 }
 
 .navbar-logo {
-  width: 20vh;
-  height: 15vh; /* Réduire la largeur à 100px */
+  width: 15vh;
+  height: 10vh; /* Réduire la largeur à 100px */
 }
 
 .offcanvas-header {
@@ -214,15 +214,11 @@ video {
 
 /* MapComponent */
 
-.container {
-  align-items: center;
-  height: 100%;
-}
 
 .search-form {
   margin-bottom: 10px;
+  margin-top: 5vh;
   text-align: center;
-
 }
 
 .search-form input {
@@ -232,7 +228,6 @@ video {
 
 .search-form button {
   padding: 5px 10px;
-  margin-top: 10px;
 }
 
 .error {

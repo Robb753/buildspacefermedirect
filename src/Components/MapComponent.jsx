@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import "../main.css"
 
 const MapComponent = () => {
@@ -10,6 +11,7 @@ const MapComponent = () => {
   const [error, setError] = useState(null);
   const [center, setCenter] = useState({ lat: 48.5734, lng: 7.7521 });
   const markersRef = useRef([]);
+  const markerClusterRef = useRef(null);
 
   useEffect(() => {
     const apiUrl = "https://farmedirect-6317c32e65bb.herokuapp.com/api/users";
@@ -58,9 +60,12 @@ const MapComponent = () => {
         // Nettoyage des anciens marqueurs
         markersRef.current.forEach((marker) => marker.setMap(null));
         markersRef.current = [];
+        if (markerClusterRef.current) {
+          markerClusterRef.current.clearMarkers();
+        }
 
         // Ajouter les nouveaux marqueurs
-        users.forEach((user) => {
+        const newMarkers = users.map((user) => {
           const position = { lat: user.latitude, lng: user.longitude };
           const marker = new AdvancedMarkerElement({
             map,
@@ -73,11 +78,17 @@ const MapComponent = () => {
           });
 
           marker.addListener("click", () => {
-            window.location.href = "/farm/${user._id}";
+            window.location.link = "/farm/${user._id}";
           });
 
-          markersRef.current.push(marker);
+          markersRef.current = newMarkers;
         });
+        if (map) {
+          markerClusterRef.current = new MarkerClusterer({
+            map,
+            markers: newMarkers,
+          });
+        }
       }
     };
 
@@ -91,6 +102,9 @@ const MapComponent = () => {
       if (map !== null) {
         markersRef.current.forEach((marker) => marker.setMap(null));
         markersRef.current = [];
+        if (markerClusterRef.current) {
+          markerClusterRef.current.clearMarkers();
+        }
       }
     };
   }, [users, map, center]);
@@ -156,8 +170,13 @@ const MapComponent = () => {
       </div>
       <div className="content">
         <div className="farm-list">
-          {users.map((user) => (
-            <div className="farm-card" key={user._id}>
+          {visibleUsers.map((user) => (
+            <div
+              className="farm-card"
+              key={user._id}
+              onClick={() => (window.location.link = `/farm/${user._id}`)}
+              style={{ cursor: "pointer" }}
+            >
               <h3>{user.name}</h3>
               <p>{user.produce}</p>
             </div>
