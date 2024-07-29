@@ -3,7 +3,7 @@ import axios from "axios";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { SuperClusterAlgorithm } from "@googlemaps/markerclusterer";
 import { clusterOptions } from "../clusterOptions";
-import "../main.css"
+import "../main.css";
 
 const MapComponent = () => {
   const [users, setUsers] = useState([]);
@@ -20,7 +20,7 @@ const MapComponent = () => {
     fetch(apiUrl)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("HTTP error! Status: ${response.status}");
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();
       })
@@ -80,14 +80,14 @@ const MapComponent = () => {
           });
 
           marker.addListener("click", () => {
-            window.location.href = "/farm/${user._id}";
+            window.location.href = `/farm/${user._id}`;
           });
 
           return marker;
         });
 
-          markersRef.current = newMarkers;
-        
+        markersRef.current = newMarkers;
+
         if (map) {
           markerClusterRef.current = new MarkerClusterer({
             map,
