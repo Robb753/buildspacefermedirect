@@ -1,7 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import axios from "axios";
-import { MarkerClusterer } from "@googlemaps/markerclusterer";
-import { SuperClusterAlgorithm } from "@googlemaps/markerclusterer";
+import {
+  MarkerClusterer,
+  SuperClusterAlgorithm,
+} from "@googlemaps/markerclusterer";
 import { clusterOptions } from "../clusterOptions";
 import "../main.css";
 
@@ -33,6 +35,22 @@ const MapComponent = () => {
         setError("Failed to fetch users data.");
       });
   }, []);
+
+  const updateVisibleUsers = useCallback(() => {
+    if (map) {
+      const bounds = map.getBounds();
+      if (bounds) {
+        const visible = users.filter((user) => {
+          const position = new window.google.maps.LatLng(
+            user.latitude,
+            user.longitude
+          );
+          return bounds.contains(position);
+        });
+        setVisibleUsers(visible);
+      }
+    }
+  }, [map, users]);
 
   useEffect(() => {
     const initializeMap = async () => {
@@ -114,23 +132,7 @@ const MapComponent = () => {
         }
       }
     };
-  }, [users, map, center]);
-
-  const updateVisibleUsers = () => {
-    if (map) {
-      const bounds = map.getBounds();
-      if (bounds) {
-        const visible = users.filter((user) => {
-          const position = new window.google.maps.LatLng(
-            user.latitude,
-            user.longitude
-          );
-          return bounds.contains(position);
-        });
-        setVisibleUsers(visible);
-      }
-    }
-  };
+  }, [users, map, center, updateVisibleUsers]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -164,17 +166,6 @@ const MapComponent = () => {
 
   return (
     <div className="map-container">
-      <div className="search-form">
-        <form onSubmit={handleSearch}>
-          <input
-            type="text"
-            name="query"
-            placeholder="Rechercher une adresse..."
-          />
-          <button type="submit">Rechercher</button>
-        </form>
-        {error && <div className="error">{error}</div>}
-      </div>
       <div className="content">
         <div className="farm-list">
           {visibleUsers.map((user) => (
