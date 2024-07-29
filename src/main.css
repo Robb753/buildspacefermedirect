@@ -249,10 +249,12 @@ video {
 }
 
 .farm-list {
-  width: 50%;
-  overflow-y: auto;
+  width: 50% !important; /* Forcer la largeur à 50% */
+  overflow-y: auto; /* Ajouter un défilement vertical si nécessaire */
   padding: 10px;
   box-sizing: border-box;
+  background-color: #f9f9f9; /* Couleur de fond pour plus de contraste */
+  border-right: 1px solid #ddd; /* Bordure pour séparer la liste de la carte */
 }
 
 .farm-card {
@@ -261,12 +263,35 @@ video {
   padding: 10px;
   border-radius: 5px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-  background-color: #fff; /* Ajouté pour une meilleure visibilité */
+  background-color: #fff; /* Couleur de fond des cartes */
+  cursor: pointer; /* Curseur de pointeur pour indiquer que c'est cliquable */
+  transition: background-color 0.3s ease; /* Transition pour l'effet de survol */
+}
+
+.farm-card:hover {
+  background-color: #f1f1f1; /* Changer la couleur de fond lors du survol */
 }
 
 .map {
-  width: 50%;
-  height: 100%;
+  width: 50% !important; /* Forcer la largeur à 50% */
+  height: 100% !important; /* Forcer la hauteur à 100% */
+  position: relative; /* Assurer que la carte prend la place prévue */
+}
+
+.marker-cluster {
+  background-color: rgba(0, 0, 0, 0.7) !important; /* Couleur de fond des clusters */
+  color: white !important; /* Couleur du texte */
+  border-radius: 50% !important; /* Bord arrondi pour les clusters */
+  width: 40px !important; /* Largeur du cluster */
+  height: 40px !important; /* Hauteur du cluster */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marker-cluster-icon {
+  font-size: 14px !important; /* Taille de la police */
+  line-height: 40px !important; /* Hauteur de ligne pour centrer le texte */
 }
 
 @media screen and (max-width: 1200px) {

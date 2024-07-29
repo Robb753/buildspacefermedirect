@@ -169,12 +169,11 @@ const MapComponent = () => {
       <div className="content">
         <div className="farm-list">
           {visibleUsers.map((user) => (
-            <div
+        <div
               className="farm-card"
               key={user._id}
               onClick={() => (window.location.href = `/farm/${user._id}`)}
-              style={{ cursor: "pointer" }}
-            >
+        >
               <h3>{user.name}</h3>
               <p>{user.produce}</p>
             </div>
