@@ -79,7 +79,7 @@ const MapComponent = () => {
           });
 
           marker.addListener("click", () => {
-            window.location.link = "/farm/${user._id}";
+            window.location.href = "/farm/${user._id}";
           });
 
           markersRef.current = newMarkers;
@@ -175,7 +175,7 @@ const MapComponent = () => {
             <div
               className="farm-card"
               key={user._id}
-              onClick={() => (window.location.link = `/farm/${user._id}`)}
+              onClick={() => (window.location.href = `/farm/${user._id}`)}
               style={{ cursor: "pointer" }}
             >
               <h3>{user.name}</h3>
