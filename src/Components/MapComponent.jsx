@@ -56,6 +56,7 @@ const MapComponent = () => {
 
         mapInstance.addListener("idle", updateVisibleUsers);
         mapInstance.addListener("zoom_changed", updateVisibleUsers);
+        mapInstance.addListener("bounds_changed", updateVisibleUsers);
 
         setMap(mapInstance);
       } else {
