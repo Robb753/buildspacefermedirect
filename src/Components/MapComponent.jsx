@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import "../main.css"
 
 const MapComponent = () => {
   const [users, setUsers] = useState([]);
+  const [visibleUsers, setVisibleUsers] = useState([]);
   const [map, setMap] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [error, setError] = useState(null);
@@ -14,7 +16,7 @@ const MapComponent = () => {
     fetch(apiUrl)
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          throw new Error("HTTP error! Status: ${response.status}");
         }
         return response.json();
       })
@@ -48,6 +50,9 @@ const MapComponent = () => {
           mapId: "5f8f7e10189920ed",
         });
 
+        mapInstance.addListener("idle", updateVisibleUsers);
+        mapInstance.addListener("zoom_changed", updateVisibleUsers);
+
         setMap(mapInstance);
       } else {
         // Nettoyage des anciens marqueurs
@@ -68,7 +73,7 @@ const MapComponent = () => {
           });
 
           marker.addListener("click", () => {
-            window.location.href = `/farm/${user._id}`;
+            window.location.href = "/farm/${user._id}";
           });
 
           markersRef.current.push(marker);
@@ -89,6 +94,22 @@ const MapComponent = () => {
       }
     };
   }, [users, map, center]);
+
+  const updateVisibleUsers = () => {
+    if (map) {
+      const bounds = map.getBounds();
+      if (bounds) {
+        const visible = users.filter((user) => {
+          const position = new window.google.maps.LatLng(
+            user.latitude,
+            user.longitude
+          );
+          return bounds.contains(position);
+        });
+        setVisibleUsers(visible);
+      }
+    }
+  };
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -121,30 +142,28 @@ const MapComponent = () => {
   };
 
   return (
-    <div>
-      <form
-        onSubmit={handleSearch}
-        style={{ marginBottom: "10px", textAlign: "center" }}
-      >
-        <input
-          type="text"
-          name="query"
-          placeholder="Rechercher une adresse..."
-          style={{ width: "300px", padding: "5px" }}
-        />
-        <button type="submit" style={{ padding: "5px 10px" }}>
-          Rechercher
-        </button>
-      </form>
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      <div id="map" style={{ height: "500px", width: "100%" }}></div>
-      <div>
-        {users.map((user) => (
-          <div key={user._id}>
-            <h3>{user.name}</h3>
-            <p>{user.produce}</p>
-          </div>
-        ))}
+    <div className="container">
+      <div className="search-form">
+        <form onSubmit={handleSearch}>
+          <input
+            type="text"
+            name="query"
+            placeholder="Rechercher une adresse..."
+          />
+          <button type="submit">Rechercher</button>
+        </form>
+        {error && <div className="error">{error}</div>}
+      </div>
+      <div className="content">
+        <div className="farm-list">
+          {users.map((user) => (
+            <div className="farm-card" key={user._id}>
+              <h3>{user.name}</h3>
+              <p>{user.produce}</p>
+            </div>
+          ))}
+        </div>
+        <div id="map" className="map"></div>
       </div>
     </div>
   );

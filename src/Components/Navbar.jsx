@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-custom">
-      <div className="container">
+      <div className="container navbar">
         <Link className="navbar-brand" to="/home">
           <img src={Logo} alt="Logo" className="img-fluid navbar-logo" />
         </Link>
@@ -32,17 +32,8 @@ const Navbar = () => {
           <div className="offcanvas-body">
             <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li className="nav-item">
-                <Link
-                  className="nav-link active"
-                  aria-current="page"
-                  to="/sign-in"
-                >
-                  Sign In
-                </Link>
-              </li>
-              <li className="nav-item">
                 <Link className="nav-link" to="/register">
-                  Register
+                  Register my Farm
                 </Link>
               </li>
               <li className="nav-item">
