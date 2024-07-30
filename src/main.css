@@ -50,8 +50,8 @@ body {
 }
 
 .offcanvas-header {
-            display: none;
-          }
+  display: none;
+}
 
 .offcanvas {
   background-color: transparent;
@@ -175,7 +175,6 @@ video {
   margin-inline: auto;
   line-height: 1.5;
 }
-
 
 .copyright {
   font-size: 0.60rem;
@@ -303,14 +302,14 @@ video {
     margin: auto;
     padding: 0.6rem 1.5rem;
   }
-    section h1{
-        font-size: 80px;
-    }
+  section h1 {
+    font-size: 80px;
+  }
 
-    .header-navbar.sticky nav{
-        width: 70px;
-        height: 70px;
-    }
+  .header-navbar.sticky nav {
+    width: 70px;
+    height: 70px;
+  }
 
   .hero-container .btn {
     padding: 0.5rem 1rem; /* Ajuste la taille du bouton */
