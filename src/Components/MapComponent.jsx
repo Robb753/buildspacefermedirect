@@ -1,9 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import axios from "axios";
-import {
-  MarkerClusterer,
-  SuperClusterAlgorithm,
-} from "@googlemaps/markerclusterer";
 import { clusterOptions } from "../clusterOptions";
 import "../main.css";
 
