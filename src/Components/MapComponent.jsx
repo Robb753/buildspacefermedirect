@@ -24,6 +24,7 @@ const MapComponent = () => {
       .then((data) => {
         console.log("Fetched users:", data);
         setUsers(data);
+        setVisibleUsers(data); // Initialiser avec toutes les fermes
       })
       .catch((error) => {
         console.error("Error fetching users:", error);
@@ -131,9 +132,11 @@ const MapComponent = () => {
 
   const updateVisibleUsers = (mapInstance) => {
     const bounds = mapInstance.getBounds();
+    if (!bounds) return;
+
     const visible = users.filter((user) => {
       const position = { lat: user.latitude, lng: user.longitude };
-      return bounds.contains(position);
+      return bounds.contains(new window.google.maps.LatLng(position));
     });
     setVisibleUsers(visible);
   };
@@ -143,11 +146,16 @@ const MapComponent = () => {
       <div className="list-container">
         <h2>Liste des Fermes</h2>
         <ul>
-          {visibleUsers.map((user) => (
-            <li key={user._id}>
-              <Link to={`/farm/${user._id}`}>{user.name}</Link> - {user.produce}
-            </li>
-          ))}
+          {visibleUsers.length > 0 ? (
+            visibleUsers.map((user) => (
+              <li key={user._id}>
+                <Link to={`/farm/${user._id}`}>{user.name}</Link> -{" "}
+                {user.produce}
+              </li>
+            ))
+          ) : (
+            <li>Aucune ferme visible dans cette zone.</li>
+          )}
         </ul>
       </div>
       <div className="map-wrapper">
