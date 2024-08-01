@@ -1,17 +1,16 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+// Components/MapComponent.jsx
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { clusterOptions } from "../clusterOptions";
-import "../main.css";
+import { Link } from "react-router-dom";
+import "./MapComponent.css"; // Importez un fichier CSS pour les styles spécifiques
 
 const MapComponent = () => {
   const [users, setUsers] = useState([]);
-  const [visibleUsers, setVisibleUsers] = useState([]);
   const [map, setMap] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [error, setError] = useState(null);
   const [center, setCenter] = useState({ lat: 48.5734, lng: 7.7521 });
   const markersRef = useRef([]);
-  const markerClusterRef = useRef(null);
 
   useEffect(() => {
     const apiUrl = "https://farmedirect-6317c32e65bb.herokuapp.com/api/users";
@@ -31,22 +30,6 @@ const MapComponent = () => {
         setError("Failed to fetch users data.");
       });
   }, []);
-
-  const updateVisibleUsers = useCallback(() => {
-    if (map) {
-      const bounds = map.getBounds();
-      if (bounds) {
-        const visible = users.filter((user) => {
-          const position = new window.google.maps.LatLng(
-            user.latitude,
-            user.longitude
-          );
-          return bounds.contains(position);
-        });
-        setVisibleUsers(visible);
-      }
-    }
-  }, [map, users]);
 
   useEffect(() => {
     const initializeMap = async () => {
@@ -68,21 +51,14 @@ const MapComponent = () => {
           mapId: "5f8f7e10189920ed",
         });
 
-        mapInstance.addListener("idle", updateVisibleUsers);
-        mapInstance.addListener("zoom_changed", updateVisibleUsers);
-        mapInstance.addListener("bounds_changed", updateVisibleUsers);
-
         setMap(mapInstance);
       } else {
         // Nettoyage des anciens marqueurs
         markersRef.current.forEach((marker) => marker.setMap(null));
         markersRef.current = [];
-        if (markerClusterRef.current) {
-          markerClusterRef.current.clearMarkers();
-        }
 
         // Ajouter les nouveaux marqueurs
-        const newMarkers = users.map((user) => {
+        users.forEach((user) => {
           const position = { lat: user.latitude, lng: user.longitude };
           const marker = new AdvancedMarkerElement({
             map,
@@ -98,18 +74,8 @@ const MapComponent = () => {
             window.location.href = `/farm/${user._id}`;
           });
 
-          return marker;
+          markersRef.current.push(marker);
         });
-
-        markersRef.current = newMarkers;
-
-        if (map) {
-          markerClusterRef.current = new MarkerClusterer({
-            map,
-            markers: newMarkers,
-            algorithm: new SuperClusterAlgorithm(clusterOptions),
-          });
-        }
       }
     };
 
@@ -123,12 +89,9 @@ const MapComponent = () => {
       if (map !== null) {
         markersRef.current.forEach((marker) => marker.setMap(null));
         markersRef.current = [];
-        if (markerClusterRef.current) {
-          markerClusterRef.current.clearMarkers();
-        }
       }
     };
-  }, [users, map, center, updateVisibleUsers]);
+  }, [users, map, center]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -162,20 +125,33 @@ const MapComponent = () => {
 
   return (
     <div className="map-container">
-      <div className="content">
-        <div className="farm-list">
-          {visibleUsers.map((user) => (
-            <div
-              className="farm-card"
-              key={user._id}
-              onClick={() => (window.location.href = `/farm/${user._id}`)}
-            >
-              <h3>{user.name}</h3>
-              <p>{user.produce}</p>
-            </div>
+      <div className="list-container">
+        <h2>Liste des Fermes</h2>
+        <ul>
+          {users.map((user) => (
+            <li key={user._id}>
+              <Link to={`/farm/${user._id}`}>{user.name}</Link> - {user.produce}
+            </li>
           ))}
-        </div>
-        <div id="map" className="map"></div>
+        </ul>
+      </div>
+      <div className="map-wrapper">
+        <form
+          onSubmit={handleSearch}
+          style={{ marginBottom: "10px", textAlign: "center" }}
+        >
+          <input
+            type="text"
+            name="query"
+            placeholder="Rechercher une adresse..."
+            style={{ width: "300px", padding: "5px" }}
+          />
+          <button type="submit" style={{ padding: "5px 10px" }}>
+            Rechercher
+          </button>
+        </form>
+        {error && <div style={{ color: "red" }}>{error}</div>}
+        <div id="map" style={{ height: "500px", width: "100%" }}></div>
       </div>
     </div>
   );

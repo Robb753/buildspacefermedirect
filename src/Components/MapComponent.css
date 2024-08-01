@@ -1,0 +1,25 @@
+/* Components/MapComponent.css */
+
+.map-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.list-container {
+  width: 25%;
+  max-height: 600px; /* Ajustez la hauteur selon vos besoins */
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #f8f9fa; /* Couleur de fond pour la liste */
+  border-right: 1px solid #ddd; /* Bordure entre la liste et la carte */
+}
+
+.map-wrapper {
+  width: 75%;
+  padding: 10px;
+}
+
+#map {
+  height: 600px; /* Ajustez la hauteur selon vos besoins */
+  width: 100%;
+}
