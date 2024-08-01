@@ -6,8 +6,8 @@ import "./MapComponent.css"; // Importez un fichier CSS pour les styles spécifi
 
 const MapComponent = () => {
   const [users, setUsers] = useState([]);
+  const [visibleUsers, setVisibleUsers] = useState([]);
   const [map, setMap] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
   const [error, setError] = useState(null);
   const [center, setCenter] = useState({ lat: 48.5734, lng: 7.7521 });
   const markersRef = useRef([]);
@@ -51,6 +51,10 @@ const MapComponent = () => {
           mapId: "5f8f7e10189920ed",
         });
 
+        mapInstance.addListener("idle", () => {
+          updateVisibleUsers(mapInstance);
+        });
+
         setMap(mapInstance);
       } else {
         // Nettoyage des anciens marqueurs
@@ -76,6 +80,8 @@ const MapComponent = () => {
 
           markersRef.current.push(marker);
         });
+
+        updateVisibleUsers(map);
       }
     };
 
@@ -123,12 +129,21 @@ const MapComponent = () => {
     }
   };
 
+  const updateVisibleUsers = (mapInstance) => {
+    const bounds = mapInstance.getBounds();
+    const visible = users.filter((user) => {
+      const position = { lat: user.latitude, lng: user.longitude };
+      return bounds.contains(position);
+    });
+    setVisibleUsers(visible);
+  };
+
   return (
     <div className="map-container">
       <div className="list-container">
         <h2>Liste des Fermes</h2>
         <ul>
-          {users.map((user) => (
+          {visibleUsers.map((user) => (
             <li key={user._id}>
               <Link to={`/farm/${user._id}`}>{user.name}</Link> - {user.produce}
             </li>
@@ -136,20 +151,6 @@ const MapComponent = () => {
         </ul>
       </div>
       <div className="map-wrapper">
-        <form
-          onSubmit={handleSearch}
-          style={{ marginBottom: "10px", textAlign: "center" }}
-        >
-          <input
-            type="text"
-            name="query"
-            placeholder="Rechercher une adresse..."
-            style={{ width: "300px", padding: "5px" }}
-          />
-          <button type="submit" style={{ padding: "5px 10px" }}>
-            Rechercher
-          </button>
-        </form>
         {error && <div style={{ color: "red" }}>{error}</div>}
         <div id="map" style={{ height: "500px", width: "100%" }}></div>
       </div>
